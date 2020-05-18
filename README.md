@@ -183,3 +183,4 @@ CREATE TABLE IF NOT EXISTS `books` (
 
 All of this should be written and executed in the MySQL Workbench.
 
+![create-database-and-table](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/create-database-table.png)
