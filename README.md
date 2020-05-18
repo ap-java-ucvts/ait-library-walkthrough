@@ -324,3 +324,166 @@ public class Book {
   }
 }
 ```
+
+## Creating a Data Access Layer
+
+Now that we have a `Book` class to model books in the database, we need a class to provide the CRUD (create, read, update, delete) operations pertaining to a book. This is called a data access layer.
+
+Again, right-click the project and click `New > Class`. We'll call this class `BookDAO`, and we'll put it in the `library` package, too.
+
+![new-book-dao-class](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/new-book-dao-class.png)
+
+We're going to put our JDBC methods in this class so we can use it to interact with the database. Let's take a minute to think about some of the interactions we'll want the ability to have.
+
+* Retrieving a single book from the database
+* Retrieving all books from the database
+* Inserting a book into the database
+* Updating a single book in the database
+* Deleting a single book from the database
+
+And obviously, we'll need the ability to connect to the database. So let's get programming.
+
+```java
+package library;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BookDAO {
+
+  private final String url;
+  private final String username;
+  private final String password;
+  
+  public BookDAO(String url, String username, String password) {
+    super();
+    
+    this.url = url;
+    this.username = username;
+    this.password = password;
+  }
+  
+  public Book getBook(int id) throws SQLException {
+    final String sql = "SELECT * FROM books WHERE book_id = ?";
+    
+    Book book = null;
+    Connection conn = getConnection();
+    PreparedStatement pstmt = conn.prepareStatement(sql);
+    
+    pstmt.setInt(1, id);
+    ResultSet rs = pstmt.executeQuery();
+    
+    if (rs.next()) {
+      String title = rs.getString("title");
+      String author = rs.getString("author");
+      int copies = rs.getInt("copies");
+      int available = rs.getInt("available");
+      
+      book = new Book(id, title, author, copies, available);
+    }
+    
+    rs.close();
+    pstmt.close();
+    conn.close();
+    
+    return book;
+  }
+  
+  public List<Book> getBooks() throws SQLException {
+    final String sql = "SELECT * FROM books ORDER BY book_id ASC";
+    
+    List<Book> books = new ArrayList<>();
+    Connection conn = getConnection();
+    Statement stmt = conn.createStatement();
+    ResultSet rs = stmt.executeQuery(sql);
+    
+    while (rs.next()) {
+      int id = rs.getInt("book_id");
+      String title = rs.getString("title");
+      String author = rs.getString("author");
+      int copies = rs.getInt("copies");
+      int available = rs.getInt("available");
+      
+      books.add(new Book(id, title, author, copies, available));
+    }
+    
+    rs.close();
+    stmt.close();
+    conn.close();
+    
+    return books;
+  }
+  
+  public boolean insertBook(Book book) throws SQLException {
+    final String sql = "INSERT INTO books (title, author, copies, available) VALUES (?, ?, ?, ?)";
+    
+    Connection conn = getConnection();
+    PreparedStatement pstmt = conn.prepareStatement(sql);
+    
+    pstmt.setString(1, book.getTitle());
+    pstmt.setString(2, book.getAuthor());
+    pstmt.setInt(3, book.getCopies());
+    pstmt.setInt(4, book.getAvailable());
+    int affected = pstmt.executeUpdate();
+    
+    pstmt.close();
+    conn.close();
+    
+    return affected == 1;
+  }
+  
+  public boolean updateBook(Book book) throws SQLException {
+    final String sql = "UPDATE books SET title = ?, author = ?, copies = ?, available = ? WHERE book_id = ?";
+    
+    Connection conn = getConnection();
+    PreparedStatement pstmt = conn.prepareStatement(sql);
+    
+    pstmt.setString(1, book.getTitle());
+    pstmt.setString(2, book.getAuthor());
+    pstmt.setInt(3, book.getCopies());
+    pstmt.setInt(4, book.getAvailable());
+    pstmt.setInt(5, book.getId());
+    int affected = pstmt.executeUpdate();
+    
+    pstmt.close();
+    conn.close();
+    
+    return affected == 1;
+  }
+  
+  public boolean deleteBook(Book book) throws SQLException {
+    final String sql = "DELETE FROM books WHERE book_id = ?";
+    
+    Connection conn = getConnection();
+    PreparedStatement pstmt = conn.prepareStatement(sql);
+    
+    pstmt.setInt(1, book.getId());
+    int affected = pstmt.executeUpdate();
+    
+    pstmt.close();
+    conn.close();
+    
+    return affected == 1;
+  }
+  
+  private Connection getConnection() throws SQLException {
+    final String driver = "com.mysql.cj.jdbc.Driver";
+    
+    try {
+      Class.forName(driver);
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+    
+    return DriverManager.getConnection(url, username, password);
+  }
+}
+```
+
+One point of emphasis. `Connection`, `Statement`, `PreparedStatement`, and `ResultSet` objects need to be closed when you're done using them, and they should be closed in reverse order relative to the order in which they were created.
