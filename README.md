@@ -663,3 +663,37 @@ We're going to add just what we need at the moment, but we will be back to add m
 ```
 
 You'll see references to our MySQL username and password, so make sure you enter the information you setup while installing MySQL. The username and password values are specific to my instance.
+
+## Revising the Servlet
+
+Now that we are storing our JDBC settings in `web.xml`, we can and should remove the plaintext references to the `url`, `username`, and `password`. Take a look at the `init` method in `Controller.java`.
+
+Replace the following lines of old code:
+
+```java
+final String url = "jdbc:mysql://localhost:3306/library?serverTimezone=EST";
+final String username = "root";
+final String password = "rootpwd";
+```
+
+with this newly refactored code, which references the `web.xml` file:
+
+```java
+final String url = this.getServletContext().getInitParameter("JDBC-URL");
+final String username = this.getServletContext().getInitParameter("JDBC-USERNAME");
+final String password = this.getServletContext().getInitParameter("JDBC-PASSWORD");
+```
+
+The new `init` method, in its entirely, should look like this now.
+
+```java
+public void init() {
+  final String url = this.getServletContext().getInitParameter("JDBC-URL");
+  final String username = this.getServletContext().getInitParameter("JDBC-USERNAME");
+  final String password = this.getServletContext().getInitParameter("JDBC-PASSWORD");
+
+  this.dao = new BookDAO(url, username, password);
+}
+```
+
+Much better! Our servlet is just a little more secure.
