@@ -9,10 +9,10 @@ In just a few short weeks, you're going to gain some exposure to quite a few new
 * Apache Tomcat
 * Java EE
 * MySQL
+* Maven
+* Java Database Connectivity (JDBC)
 * Java Servlets &amp; Java Server Pages (JSP)
 * JSP Standard Tag Library (JSTL)
-* Java Database Connectivity (JDBC)
-* Maven
 
 Don't worry, we're going to walk through it together. On to the configuration steps...
 
