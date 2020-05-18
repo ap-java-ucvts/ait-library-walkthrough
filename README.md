@@ -6,8 +6,8 @@ Before we begin, we'll need to configure our development environment. We're goin
 
 In just a few short weeks, you're going to gain some exposure to quite a few new technologies.
 
-* Java EE
 * Apache Tomcat
+* Java EE
 * MySQL
 * Java Servlets &amp; Java Server Pages (JSP)
 * JSP Standard Tag Library (JSTL)
@@ -15,6 +15,17 @@ In just a few short weeks, you're going to gain some exposure to quite a few new
 * Maven
 
 Don't worry, we're going to walk through it together. On to the configuration steps...
+
+## Downloading and Installing Tomcat
+
+You can [download the latest version of Tomcat from Apache](https://tomcat.apache.org/download-90.cgi). All of the downloads are in the `Binary Distributions` section. Choose the one applicable to your operating system.
+
+The steps to install Apache's Tomcat server will differ based on your OS. I've found some helpful tutorials and videos that walk you through the process. Follow along and you'll be up-and-running in no time.
+
+* [Windows](https://www.youtube.com/watch?v=QwExzQt0XGE)
+* [macOS](https://wolfpaulus.com/tomcat/)
+
+Assuming you kept the default port of `8080`, you can verify your Tomcat installation by navigating to `localhost:8080`. If you see the Tomcat page, you're good to go.
 
 ## Get the Java EE Perspective in Eclipse
 
