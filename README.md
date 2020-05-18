@@ -156,3 +156,30 @@ Maven is a dependency management and build automation tool. It automatically tra
 ```
 
 Make sure the version numbers match between our `mysql` dependency and the version we downloaded earlier. The version on my machine is `8.0.20`, and my Maven dependency reflects this.
+
+## Setting up the Database
+
+Our database backs the entire application, so that's where we're going to start. The schema is pretty simple. We have a library, and it's going to store books.
+
+First, we create the database and tell MySQL we'll be using it.
+
+```sql
+CREATE DATABASE `library`;
+USE `library`;
+```
+
+Next, we create the `books` table. It's pretty straightforward. Every `book` gets an automatically assigned numeric `book_id`, along with a `title`, `author`, the number of `copies` the library has, and the number of books that are `available` (i.e., how many are not checked out).
+
+```sql
+CREATE TABLE IF NOT EXISTS `books` (
+  `book_id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(128) NOT NULL,
+  `author` varchar(64) NOT NULL,
+  `copies` int(3) NOT NULL,
+  `available` int(3) NOT NULL,
+  PRIMARY KEY (`book_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = latin1;
+```
+
+All of this should be written and executed in the MySQL Workbench.
+
