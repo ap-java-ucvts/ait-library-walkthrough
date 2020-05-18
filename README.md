@@ -617,3 +617,49 @@ The `doPost` and `doGet` methods are overridden from the `HttpServlet` class. Th
 Remember the `iventory.jsp` file? We setup a variable in our `forEach` loop called `books`. The `viewBooks` method is assigning the list of books retrieved from the database to that attribute. Now, the browser will have access to the data when it tries to render it.
 
 We're going to come back to this class a few times to improve it. We want to be able to add, edit, and delete books, so we'll need to add routes to recognize and process those actions. And we're going to get rid of the plaintext configuration and credentials in our constructor. That's very bad practice, so we'll clean that up, too.
+
+## Configurations
+
+To allow our servlet to recognize and respond to web requests, we need to do some configuration. All of our configuration is going to go in a file called `web.xml`. Right-click the project and click `New > File`. Put this file in the `WebContent/WEB-INF` folder.
+
+![web-xml-configuration](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/configure-web-xml.png)
+
+We're going to add just what we need at the moment, but we will be back to add more.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app
+  xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+  version="4.0"
+>
+  <display-name>AIT Library</display-name>
+  
+  <context-param>
+    <param-name>JDBC-URL</param-name>
+    <param-value>jdbc:mysql://localhost:3306/library?serverTimezone=EST</param-value>
+  </context-param>
+  <context-param>
+    <param-name>JDBC-USERNAME</param-name>
+    <param-value>root</param-value>
+  </context-param>
+  <context-param>
+    <param-name>JDBC-PASSWORD</param-name>
+    <param-value>rootpwd</param-value>
+  </context-param>
+  
+  <servlet>
+    <servlet-name>Controller</servlet-name>
+    <servlet-class>application.Controller</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>Controller</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+</web-app>
+```
+
+You'll see references to our MySQL username and password, so make sure you enter the information you setup while installing MySQL. The username and password values are specific to my instance.
