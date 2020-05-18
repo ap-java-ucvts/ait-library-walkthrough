@@ -27,7 +27,7 @@ The steps to install Apache's Tomcat server will differ based on your OS. I've f
 
 Assuming you kept the default port of `8080`, you can verify your Tomcat installation by navigating to `localhost:8080`. If you see the Tomcat page, you're good to go.
 
-## Getting the Java EE Perspective in Eclipse
+## Getting the Java EE Perspective
 
 Java EE is the enterprise edition of the Java platform. It's what professional software developers use to create secure, multi-tiered, scalable web applications.
 
