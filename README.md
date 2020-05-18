@@ -198,3 +198,11 @@ INSERT INTO `books` (`title`, `author`, `copies`, `available`) VALUES ("One Hund
 Just like last time, we're doing this through the MySQL Workbench.
 
 ![insert-data](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/insert-data.png)
+
+## Testing Connectivity
+
+As we dive more deeply into this application, we'll do things much differently. We just want to verify that our application is connecting to and reading data from our database.
+
+Right-click the project in Eclipse and click `New > Class`. Enter a `Package` of `application`, a `Name` of `Main`, and check the `main` method stub.
+
+![create-main-class](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/create-main-class.png)
