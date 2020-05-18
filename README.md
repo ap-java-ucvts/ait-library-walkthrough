@@ -257,3 +257,70 @@ And here's what it looks like in Eclipse, including the expected output of all f
 ![main-method-test-output](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/main-method-output.png)
 
 Eclipse might ask you if you want to `Run on Server` or as a `Java Application`. For now, choose to run the program as a `Java Application`. Later, we'll work on the server side.
+
+## Modeling the Data
+
+Now that we know everything is wired up correctly, let's start writing some more code. We'll start with a class to model the books in the database. Right-click the project and click `New > Class`. We'll be putting our `Book` class in a new package called `library`.
+
+![new-book-class](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/new-book-class.png)
+
+Let's add some code. We want to model the database entities, so we'll create an instance variable for each column in the `books` table.
+
+* `id`
+* `title`
+* `author`
+* `copies`
+* `available`
+
+We'll create a constructor using each of these fields, as well as some getters and setters. The `id`, `title`, and `author` never change, so we only need getters for those three. `copies` and `available` can change over time, so we'll need getters and setters for those two.
+
+```java
+package library;
+
+public class Book {
+
+  private int id;
+  private String title;
+  private String author;
+  private int copies;
+  private int available;
+
+  public Book(int id, String title, String author, int copies, int available) {
+    super();
+
+    this.id = id;
+    this.title = title;
+    this.author = author;
+    this.copies = copies;
+    this.available = available;
+  }
+  
+  public int getId() {
+    return id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+    
+  public String getAuthor() {
+    return author;
+  }
+
+  public int getCopies() {
+    return copies;
+  }
+    
+  public void setCopies(int copies) {
+    this.copies = copies;
+  }
+    
+  public int getAvailable() {
+    return available;
+  }
+    
+  public void setAvailable(int available) {
+    this.available = available;
+  }
+}
+```
