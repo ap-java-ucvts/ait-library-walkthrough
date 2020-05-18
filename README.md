@@ -184,3 +184,17 @@ CREATE TABLE IF NOT EXISTS `books` (
 All of this should be written and executed in the MySQL Workbench.
 
 ![create-database-and-table](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/create-database-table.png)
+
+Now, let's put some data in our database. We'll put five books into the `books` table.
+
+```sql
+INSERT INTO `books` (`title`, `author`, `copies`, `available`) VALUES ("In Search of Lost Time", "Marcel Proust", 3, 3);
+INSERT INTO `books` (`title`, `author`, `copies`, `available`) VALUES ("Ulysses", "James Joyce", 7, 7);
+INSERT INTO `books` (`title`, `author`, `copies`, `available`) VALUES ("Don Quixote", "Miguel de Cervantes", 10, 10);
+INSERT INTO `books` (`title`, `author`, `copies`, `available`) VALUES ("The Great Gatsby", "F. Scott Fitzgerald", 12, 12);
+INSERT INTO `books` (`title`, `author`, `copies`, `available`) VALUES ("One Hundred Years of Solitude", "Gabriel Garcia Marquez", 14, 14);
+```
+
+Just like last time, we're doing this through the MySQL Workbench.
+
+![insert-data](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/insert-data.png)
