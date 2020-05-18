@@ -696,4 +696,29 @@ public void init() {
 }
 ```
 
-Much better! Our servlet is just a little more secure.
+Much better! Our servlet is just a little more secure. While we're at it, we don't need `Main.java` anymore. You can go ahead and delete it.
+
+## Deployment Assembly
+
+One more thing to do before we test our code. We need to make sure Eclipse knows to include our Maven dependencies in the deployment. Right-click the project and click `Properties`, then select `Deployment Assembly`.
+
+![deployment-assembly-1](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/deployment-assembly-1.png)
+
+See? Our Maven dependencies are nowhere to be found. Let's change that. Click the `Add` button, then select `Java Build Path Entries`.
+
+![deployment-assembly-2](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/deployment-assembly-2.png)
+
+Now, click `Next >` and select `Maven Dependencies`.
+
+![deployment-assembly-3](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/deployment-assembly-3.png)
+
+Click `Finish`, and you should now see a reference to the `Maven Dependencies` folder. Click `Apply and Close`.
+
+![deployment-assembly-3](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/deployment-assembly-4.png)
+
+## Testing our Application
+
+Starting Tomcat is easy. Open the `Servers` tab. You should see `Tomcat v9.0 Server at localhost` (or whatever you named your server). Either way, it'll indicate that it's not running. Right-click it and click `Start`.
+
+In your browser, navigate to `http://localhost:8080/ait-library/`. If you did everything right, you should see our books rendering on the page.
+
