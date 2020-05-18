@@ -37,7 +37,7 @@ Navigate to `Help > Install New Software...` to bring up the `Available Software
 
 Type `http://download.eclipse.org/releases/<YOUR-VERSION-TAG>` in the `Work with` textbox. I am using Eclipse 2020-03, so my URL ends in `2020-03`. Yours may be different.
 
-![install-new-software-1](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/eclipse-software-1.png)
+![install-new-software](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/eclipse-software.png)
 
 Expand the `Web, XML, Java EE and OSGi Enterprise Development` tree, and check the following components.
 
@@ -73,4 +73,10 @@ Open the `Apache` folder, and click `Tomcat v9.0 Server`, which is what we downl
 
 ![eclipse-servers-3](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/eclipse-servers-3.png)
 
+Click `Next`, where you'll be asked to browse for your Apache installation directory.
+
+![eclipse-servers-3](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/eclipse-servers-4.png)
+
 If you did everything right, you'll see a `Tomcat` entry in the `Servers` tab at the bottom. There will also be a `Servers` folder in your `Project Explorer` pane.
+
+![eclipse-servers-3](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/eclipse-servers-5.png)
