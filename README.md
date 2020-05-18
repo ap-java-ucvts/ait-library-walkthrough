@@ -101,7 +101,7 @@ Click `Finish` and the project will be added to your `Project Explorer`.
 
 ![new-dynamic-web-project-2](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/eclipse-dynamic-web-project-2.png)
 
-### Converting to a Maven Project
+## Converting to a Maven Project
 
 Right-click the project and click `Configure > Convert to Maven Project`. Make sure your settings match mine, including selecting a `Packaging` of `WAR`.
 
@@ -110,3 +110,49 @@ Right-click the project and click `Configure > Convert to Maven Project`. Make s
 After the project is converting to Maven, you should see a `pom.xml` file.
 
 ![maven-pom](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/maven-pom-1.png)
+
+## Adding Maven Dependencies
+
+Maven is a dependency management and build automation tool. It automatically tracks and downloads external project dependencies. Let's start adding ours.
+
+```xml
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ait-library</groupId>
+  <artifactId>ait-library</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>ait-library</name>
+  
+  <dependencies>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+      <version>2.3.3</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>jstl</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.20</version>
+    </dependency>
+  </dependencies>
+</project>
+```
+
+Make sure the version numbers match between our `mysql` dependency and the version we downloaded earlier. The version on my machine is `8.0.20`, and my Maven dependency reflects this.
