@@ -487,3 +487,56 @@ public class BookDAO {
 ```
 
 One point of emphasis. `Connection`, `Statement`, `PreparedStatement`, and `ResultSet` objects need to be closed when you're done using them, and they should be closed in reverse order relative to the order in which they were created.
+
+## Adding some JSP
+
+Java Server Pages (JSP) represent the view of our application. These pages are responsible for displaying data in the browser. We're going to create a very simple one to show the books in our database.
+
+Right-click the project and click `New > JSP File`. Select `WebContent` as the parent folder, and name the file `inventory.jsp`.
+
+![add-jsp](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/add-inventory-jsp.png)
+
+JSP files look a lot like HTML, but there are some important differences. We can use programming constructs that look a lot like Java to conditionally render information. Notice the special tags at the top? That's what allows us to run code inside our JSP files.
+
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>AIT Library</title>
+  </head>
+  <body>
+    <div>
+      <h1>Inventory Management</h1>
+      <h2><a href="/books">View All</a></h2>
+    </div>
+    <div>
+      <table border="1">
+        <caption>All Books in Collection</caption>
+        
+        <tr>
+          <td>Title</td>
+          <td>Author</td>
+          <td>Copies</td>
+          <td>Available</td>
+        </tr>
+        <c:forEach var="book" items="${books}">
+          <tr>
+            <td><c:out value="${book.title}" /></td>
+            <td><c:out value="${book.author}" /></td>
+            <td><c:out value="${book.copies}" /></td>
+            <td><c:out value="${book.available}" /></td>
+          </tr>
+        </c:forEach>
+      </table>
+    </div>
+  </body>
+</html>
+```
+
+The second tag in this file denotes a `prefix`. We use that prefix to start all code blocks within our JSP file. See the `forEach` section? It starts with `<c:`, which tells JSP that we're about to run some Java code.
+
+This file is pretty simple. It creates a table, loops through our collection of books, and renders them on the page. It's not fancy, there's very little styling, but it works.
