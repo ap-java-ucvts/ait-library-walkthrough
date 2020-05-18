@@ -1,6 +1,6 @@
 # AIT Library Walkthrough
 
-With the AP exam behind us, it's time to get back to writing code. The last piece of code you'll ever write for me. Sad, I know. But such is life, and the show must go on.
+With the AP exam behind us, it's time to get back to writing code. One of the last pieces of code you'll ever write for me. Sad, I know. But such is life, and the show must go on.
 
 Before we begin, we'll need to configure our development environment. We're going to build a simple CRUD (create, read, update, delete) application, and we need more support than Java SE provides.
 
