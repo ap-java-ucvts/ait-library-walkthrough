@@ -16,7 +16,7 @@ In just a few short weeks, you're going to gain some exposure to quite a few new
 
 Don't worry, we're going to walk through it together. On to the configuration steps...
 
-## Downloading and Installing Tomcat
+## Installing Tomcat
 
 You can [download the latest version of Tomcat from Apache](https://tomcat.apache.org/download-90.cgi). All of the downloads are in the `Binary Distributions` section. Choose the one applicable to your operating system.
 
@@ -27,7 +27,7 @@ The steps to install Apache's Tomcat server will differ based on your OS. I've f
 
 Assuming you kept the default port of `8080`, you can verify your Tomcat installation by navigating to `localhost:8080`. If you see the Tomcat page, you're good to go.
 
-## Get the Java EE Perspective in Eclipse
+## Getting the Java EE Perspective in Eclipse
 
 Java EE is the enterprise edition of the Java platform. It's what professional software developers use to create secure, multi-tiered, scalable web applications.
 
@@ -59,7 +59,7 @@ Select `Java EE` and click `Open` to launch the new perspective.
 
 A few things have changed. Most notably, you have a range of new types of projects you can create. For now, though, we're going to focus on the `Servers` tab towards the bottom of the window.
 
-## Add Tomcat to Eclipse
+## Adding Tomcat to Eclipse
 
 Open the `Servers` tab, which is where we'll add our Tomcat instance.
 
@@ -80,3 +80,13 @@ Click `Next`, where you'll be asked to browse for your Apache installation direc
 If you did everything right, you'll see a `Tomcat` entry in the `Servers` tab at the bottom. There will also be a `Servers` folder in your `Project Explorer` pane.
 
 ![eclipse-servers-3](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/eclipse-servers-5.png)
+
+## Installing MySQL
+
+First, you'll need to [download the MySQL Community Server](https://dev.mysql.com/downloads/mysql/). Just like with Tomcat, choose the appropriate download based on your OS. You'll have to login with your Oracle Web Account, which most of you probably created when you downloaded Java. If you don't have an Oracle Web Account, it's simple enough to create one.
+
+Regardless of OS, you'll be taken through your typical click-through installer. You can keep the defaults as-is. If you're asked to create a password for the `root` user, make sure you remember it! The `root` user is how you'll login to your MySQL instance later.
+
+Once the database is installed, we'll want an easier way to work with it. [Download the MySQL Workbench](https://www.mysql.com/products/workbench/), which will help us create and query tables.
+
+![mysql-workbench](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/mysql-workbench.png)
