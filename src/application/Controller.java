@@ -19,9 +19,12 @@ public class Controller extends HttpServlet {
     private BookDAO dao;
 
     public void init() {
-	final String url = "jdbc:mysql://localhost:3306/library?serverTimezone=EST";
-	final String username = "root";
-	final String password = "rootpwd";
+//	final String url = "jdbc:mysql://localhost:3306/library?serverTimezone=EST";
+//	final String username = "root";
+//	final String password = "rootpwd";
+	final String url = this.getServletContext().getInitParameter("JDBC-URL");
+	final String username = this.getServletContext().getInitParameter("JDBC-USERNAME");
+	final String password = this.getServletContext().getInitParameter("JDBC-PASSWORD");
 	
 	this.dao = new BookDAO(url, username, password);
     }
