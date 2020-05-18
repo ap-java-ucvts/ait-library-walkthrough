@@ -90,3 +90,13 @@ Regardless of OS, you'll be taken through your typical click-through installer. 
 Once the database is installed, we'll want an easier way to work with it. [Download the MySQL Workbench](https://www.mysql.com/products/workbench/), which will help us create and query tables.
 
 ![mysql-workbench](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/mysql-workbench.png)
+
+## Creating a Project
+
+With the installation behind us, we're ready to create a new project. Go to `File > New > Dynamic Web Project`. If you want to name your project something else, that's fine. Make sure the rest of the settings match mine, though.
+
+![new-dynamic-web-project-1](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/eclipse-dynamic-web-project-1.png)
+
+Click `Finish` and the project will be added to your `Project Explorer`.
+
+![new-dynamic-web-project-2](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/eclipse-dynamic-web-project-2.png)
