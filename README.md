@@ -100,3 +100,13 @@ With the installation behind us, we're ready to create a new project. Go to `Fil
 Click `Finish` and the project will be added to your `Project Explorer`.
 
 ![new-dynamic-web-project-2](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/eclipse-dynamic-web-project-2.png)
+
+### Converting to a Maven Project
+
+Right-click the project and click `Configure > Convert to Maven Project`. Make sure your settings match mine, including selecting a `Packaging` of `WAR`.
+
+![maven-project](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/maven-project.png)
+
+After the project is converting to Maven, you should see a `pom.xml` file.
+
+![maven-pom](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/maven-pom-1.png)
