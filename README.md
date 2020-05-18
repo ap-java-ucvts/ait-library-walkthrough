@@ -251,3 +251,9 @@ public class Main {
   }
 }
 ```
+
+And here's what it looks like in Eclipse, including the expected output of all five books.
+
+![main-method-test-output](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/main-method-output.png)
+
+Eclipse might ask you if you want to `Run on Server` or as a `Java Application`. For now, choose to run the program as a `Java Application`. Later, we'll work on the server side.
