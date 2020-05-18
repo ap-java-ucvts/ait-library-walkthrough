@@ -540,3 +540,80 @@ JSP files look a lot like HTML, but there are some important differences. We can
 The second tag in this file denotes a `prefix`. We use that prefix to start all code blocks within our JSP file. See the `forEach` section? It starts with `<c:`, which tells JSP that we're about to run some Java code.
 
 This file is pretty simple. It creates a table, loops through our collection of books, and renders them on the page. It's not fancy, there's very little styling, but it works.
+
+## Creating the Servlet
+
+The Java servlet will act as our controller, which routes requests and responses between the browser and our application. It's the most complicated part of the project, so we're going to start slow.
+
+First, right-click the project and click `New > Class`. We're going to call this class `Controller`. We'll put this in our `application` folder, and extend the `HttpServlet` class. You can browse for this in Eclipse during class creation.
+
+![add-controller](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/add-controller.png)
+
+At this point, we have our database, model (`Book.java`), and data access layer (`BookDAO.java`) created, and we just added `inventory.jsp`. Our servlet is what allows the JSP file to communicate with the data access later (and by extension, the database).
+
+We'll add to this later. For now, we just want a proof-of-concept that we can access our database from the web and display its contents in the browser.
+
+```java
+package application;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import library.Book;
+import library.BookDAO;
+
+public class Controller extends HttpServlet {
+
+  private static final long serialVersionUID = 1L;
+  private BookDAO dao;
+  
+  public void init() {
+    final String url = "jdbc:mysql://localhost:3306/library?serverTimezone=EST";
+    final String username = "root";
+    final String password = "rootpwd";
+    
+    this.dao = new BookDAO(url, username, password);
+  }
+  
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    doGet(request, response);
+  }
+  
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    final String action = request.getServletPath();
+    
+    try {
+      switch (action) {
+        default:
+          viewBooks(request, response);
+          break;
+      }
+    } catch (SQLException e) {
+      throw new ServletException(e);
+    }
+  }
+  
+  private void viewBooks(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+    List<Book> books = dao.getBooks();
+    request.setAttribute("books", books);
+    
+    RequestDispatcher dispatcher = request.getRequestDispatcher("inventory.jsp");
+    dispatcher.forward(request, response);
+  }
+}
+```
+
+The `doPost` and `doGet` methods are overridden from the `HttpServlet` class. They're responsible for accepting requests from the browser, processing them as needed, and sending responses back. Our `doGet` method does all the work here. It calls the `getBooks` method from the `BookDAO` class, and sends the list of books back to the browser.
+
+Remember the `iventory.jsp` file? We setup a variable in our `forEach` loop called `books`. The `viewBooks` method is assigning the list of books retrieved from the database to that attribute. Now, the browser will have access to the data when it tries to render it.
+
+We're going to come back to this class a few times to improve it. We want to be able to add, edit, and delete books, so we'll need to add routes to recognize and process those actions. And we're going to get rid of the plaintext configuration and credentials in our constructor. That's very bad practice, so we'll clean that up, too.
