@@ -1076,7 +1076,7 @@ Let's make our error-handling a little easier, too. We don't want to check every
 
 ```jsp
 <select name="copies">
-  <c:forEach begin="1" end="10" varStatus="loop">
+  <c:forEach begin="1" end="15" varStatus="loop">
     <option value="${loop.index}" <c:if test="${book.copies == loop.index}">selected</c:if>>
       ${loop.index}
     </option>
