@@ -722,3 +722,6 @@ Starting Tomcat is easy. Open the `Servers` tab. You should see `Tomcat v9.0 Ser
 
 In your browser, navigate to `http://localhost:8080/ait-library/`. If you did everything right, you should see our books rendering on the page.
 
+![in-progress-test](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/in-progress-test-app.png)
+
+Things are finally starting to come together! Next, we'll start adding feature to allow users to add, modify, and delete books from the library's collection. Stay tuned...
