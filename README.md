@@ -704,9 +704,9 @@ final String password = "rootpwd";
 with this newly refactored code, which references the `web.xml` file:
 
 ```java
-final String url = this.getServletContext().getInitParameter("JDBC-URL");
-final String username = this.getServletContext().getInitParameter("JDBC-USERNAME");
-final String password = this.getServletContext().getInitParameter("JDBC-PASSWORD");
+final String url = getServletContext().getInitParameter("JDBC-URL");
+final String username = getServletContext().getInitParameter("JDBC-USERNAME");
+final String password = getServletContext().getInitParameter("JDBC-PASSWORD");
 ```
 
 The new `init` method, in its entirely, should look like this now.
@@ -714,9 +714,9 @@ The new `init` method, in its entirely, should look like this now.
 ```java
 public void init()
 {
-  final String url = this.getServletContext().getInitParameter("JDBC-URL");
-  final String username = this.getServletContext().getInitParameter("JDBC-USERNAME");
-  final String password = this.getServletContext().getInitParameter("JDBC-PASSWORD");
+  final String url = getServletContext().getInitParameter("JDBC-URL");
+  final String username = getServletContext().getInitParameter("JDBC-USERNAME");
+  final String password = getServletContext().getInitParameter("JDBC-PASSWORD");
 
   dao = new BookDAO(url, username, password);
 }
