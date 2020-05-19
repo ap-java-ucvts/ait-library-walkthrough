@@ -1377,3 +1377,226 @@ table td {
 So far, so good. Our `inventory.jsp` page is all styled.
 
 ![inventory-page-final](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/inventory-styled.png)
+
+Moving on to our `bookform.jsp` page, which serves as our form for adding, editing, and deleting books. Let's start with a few tweaks to the JSP.
+
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>AIT Library</title>
+    
+    <style type="text/css">
+      <%@ include file="css/styles.css" %>
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Inventory Management</h1>
+      
+      <div class="header">
+        <a href="${pageContext.request.contextPath}/" class="header-button">VIEW ALL</a>
+        <a href="${pageContext.request.contextPath}/add" class="header-button">ADD A BOOK</a> 
+      </div>
+    </div>
+    <div>
+      <c:if test="${book != null}">
+        <h2>Edit Book</h2>
+        <form action="update" method="post">
+          <input type="hidden" name="id" value="<c:out value="${book.id}" />" />
+          
+          <label>
+            Title
+            <input type="text" name="title" value="<c:out value="${book.title}" />" />
+          </label>
+          <label>
+            Author
+            <input type="text" name="author" value="<c:out value="${book.author}" />" />
+          </label>
+          <label>
+            # of Copies
+            <select name="copies">
+              <c:forEach begin="1" end="15" varStatus="loop">
+                <option value="${loop.index}"
+                  <c:if test="${book.copies == loop.index}">selected</c:if>
+                >
+                  ${loop.index}
+                </option>
+              </c:forEach>
+            </select>
+          </label>
+          <div class="form-actions">
+            <input type="submit" value="SAVE" name="submit" />
+            <input type="submit" value="DELETE" name="submit" />
+          </div>
+        </form>
+      </c:if>
+      <c:if test="${book == null}">
+        <h2>Add Book</h2>
+        <form action="insert" method="post">
+          <input type="hidden" name="id" />
+          
+          <label>
+            Title
+            <input type="text" name="title" />
+          </label>
+          <label>
+            Author
+            <input type="text" name="author" />
+          </label>
+          <label>
+            # of Copies
+            <input type="text" name="copies" />
+          </label>
+          <input type="submit" value="ADD" name="submit" />
+        </form>
+      </c:if>
+    </div>
+  </body>
+</html>
+```
+
+We need to add a few things to our `styles.css` file.
+
+```css
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: ivory;
+  font-family: "Montserrat", sans-serif;
+  padding-top: 3%;
+  text-align: center;
+}
+
+h1 {
+  letter-spacing: 3px;
+  margin-bottom: 2%;
+  text-transform: uppercase;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: 80%;
+}
+
+table tr:first-child {
+  background-color: lightblue;
+}
+
+table th {
+  font-weight: bold;
+}
+
+table td {
+  text-align: left;
+}
+
+table td:nth-child(3),
+table td:nth-child(4) {
+  text-align: center;
+}
+
+table td:nth-child(5) div {
+  display: flex;
+  justify-content: space-around;
+}
+
+table th,
+table td {
+  padding: 7px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 40%;
+}
+
+form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  margin-bottom: 2%;
+  text-align: left;
+}
+
+form input,
+form select {
+  border-radius: 3px;
+  margin-top: 1%;
+  padding: 7px;
+}
+
+h2 {
+  margin-bottom: 1%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  margin-bottom: 2%;
+  width: 30%;
+}
+
+.header-button {
+  background-color: lightcoral;
+  border: 1px solid black;
+  border-radius: 7px;
+  color: black;
+  font-weight: bold;
+  padding: 12px;
+  text-align: center;
+  text-decoration: none;
+  width: 45%;
+}
+
+.header-button:active {
+  background-color: coral;
+  color: white;
+}
+
+.button {
+  background-color: lightgray;
+  border: 1px solid black;
+  border-radius: 3px;
+  color: black;
+  font-size: 14px;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  width: 25%;
+}
+
+.button:active {
+  background-color: darkgray;
+  color: white;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3%;
+}
+
+.form-actions input {
+  width: 45%;
+}
+```
+
+And now for the final versions of our `bookform.jsp` page!
+
+![add-bookform-page-final](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/add-book-styled.png)
+![edit-bookform-page-final](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/edit-book-styled.png)
+
+Congratulations! Your very first Java EE application! Feel free to use this application as a template as you begin your next Java EE web application.
