@@ -218,9 +218,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Main {
-
-  public static void main(String[] args) throws SQLException {
+public class Main
+{
+  public static void main(String[] args) throws SQLException
+  {
     final String driver = "com.mysql.cj.jdbc.Driver";
     final String url = "jdbc:mysql://localhost:3306/library?serverTimezone=EST";
     final String username = "root";
@@ -277,15 +278,16 @@ We'll create a constructor using each of these fields, as well as some getters a
 ```java
 package library;
 
-public class Book {
-
+public class Book
+{
   private int id;
   private String title;
   private String author;
   private int copies;
   private int available;
 
-  public Book(int id, String title, String author, int copies, int available) {
+  public Book(int id, String title, String author, int copies, int available)
+  {
     super();
 
     this.id = id;
@@ -295,31 +297,38 @@ public class Book {
     this.available = available;
   }
   
-  public int getId() {
+  public int getId()
+  {
     return id;
   }
 
-  public String getTitle() {
+  public String getTitle()
+  {
     return title;
   }
     
-  public String getAuthor() {
+  public String getAuthor()
+  {
     return author;
   }
 
-  public int getCopies() {
+  public int getCopies()
+  {
     return copies;
   }
     
-  public void setCopies(int copies) {
+  public void setCopies(int copies)
+  {
     this.copies = copies;
   }
     
-  public int getAvailable() {
+  public int getAvailable()
+  {
     return available;
   }
     
-  public void setAvailable(int available) {
+  public void setAvailable(int available)
+  {
     this.available = available;
   }
 }
@@ -355,13 +364,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookDAO {
-
+public class BookDAO
+{
   private final String url;
   private final String username;
   private final String password;
   
-  public BookDAO(String url, String username, String password) {
+  public BookDAO(String url, String username, String password)
+  {
     super();
     
     this.url = url;
@@ -369,7 +379,8 @@ public class BookDAO {
     this.password = password;
   }
   
-  public Book getBook(int id) throws SQLException {
+  public Book getBook(int id) throws SQLException
+  {
     final String sql = "SELECT * FROM books WHERE book_id = ?";
     
     Book book = null;
@@ -395,7 +406,8 @@ public class BookDAO {
     return book;
   }
   
-  public List<Book> getBooks() throws SQLException {
+  public List<Book> getBooks() throws SQLException
+  {
     final String sql = "SELECT * FROM books ORDER BY book_id ASC";
     
     List<Book> books = new ArrayList<>();
@@ -420,8 +432,10 @@ public class BookDAO {
     return books;
   }
   
-  public boolean insertBook(Book book) throws SQLException {
-    final String sql = "INSERT INTO books (title, author, copies, available) VALUES (?, ?, ?, ?)";
+  public boolean insertBook(Book book) throws SQLException
+  {
+    final String sql = "INSERT INTO books (title, author, copies, available) " +
+        "VALUES (?, ?, ?, ?)";
     
     Connection conn = getConnection();
     PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -438,8 +452,10 @@ public class BookDAO {
     return affected == 1;
   }
   
-  public boolean updateBook(Book book) throws SQLException {
-    final String sql = "UPDATE books SET title = ?, author = ?, copies = ?, available = ? WHERE book_id = ?";
+  public boolean updateBook(Book book) throws SQLException
+  {
+    final String sql = "UPDATE books SET title = ?, author = ?, copies = ?, available = ? " +
+        "WHERE book_id = ?";
     
     Connection conn = getConnection();
     PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -457,7 +473,8 @@ public class BookDAO {
     return affected == 1;
   }
   
-  public boolean deleteBook(Book book) throws SQLException {
+  public boolean deleteBook(Book book) throws SQLException
+  {
     final String sql = "DELETE FROM books WHERE book_id = ?";
     
     Connection conn = getConnection();
@@ -472,7 +489,8 @@ public class BookDAO {
     return affected == 1;
   }
   
-  private Connection getConnection() throws SQLException {
+  private Connection getConnection() throws SQLException
+  {
     final String driver = "com.mysql.cj.jdbc.Driver";
     
     try {
@@ -569,12 +587,13 @@ import javax.servlet.http.HttpServletResponse;
 import library.Book;
 import library.BookDAO;
 
-public class Controller extends HttpServlet {
-
+public class Controller extends HttpServlet
+{
   private static final long serialVersionUID = 1L;
   private BookDAO dao;
   
-  public void init() {
+  public void init()
+  {
     final String url = "jdbc:mysql://localhost:3306/library?serverTimezone=EST";
     final String username = "root";
     final String password = "rootpwd";
@@ -583,12 +602,16 @@ public class Controller extends HttpServlet {
   }
   
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException
+  {
     doGet(request, response);
   }
   
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException
+  {
     final String action = request.getServletPath();
     
     try {
@@ -602,7 +625,9 @@ public class Controller extends HttpServlet {
     }
   }
   
-  private void viewBooks(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+  private void viewBooks(HttpServletRequest request, HttpServletResponse response)
+      throws SQLException, ServletException, IOException
+  {
     List<Book> books = dao.getBooks();
     request.setAttribute("books", books);
     
@@ -687,7 +712,8 @@ final String password = this.getServletContext().getInitParameter("JDBC-PASSWORD
 The new `init` method, in its entirely, should look like this now.
 
 ```java
-public void init() {
+public void init()
+{
   final String url = this.getServletContext().getInitParameter("JDBC-URL");
   final String username = this.getServletContext().getInitParameter("JDBC-USERNAME");
   final String password = this.getServletContext().getInitParameter("JDBC-PASSWORD");
@@ -757,9 +783,15 @@ Next, add one more column (and the associated data) to our `table`. This is wher
       <td><c:out value="${book.copies}" /></td>
       <td><c:out value="${book.available}" /></td>
       <td>
-        <a href="${pageContext.request.contextPath}/update?action=rent&id=<c:out value="${book.id}" />">RENT</a>
-        <a href="${pageContext.request.contextPath}/update?action=return&id=<c:out value="${book.id}" />">RETURN</a>
-        <a href="${pageContext.request.contextPath}/edit?id=<c:out value="${book.id}" />">EDIT</a>
+        <a href="${pageContext.request.contextPath}/update?action=rent&id=
+	  <c:out value="${book.id}" />">RENT
+	</a>
+        <a href="${pageContext.request.contextPath}/update?action=return&id=
+	  <c:out value="${book.id}" />">RETURN
+	</a>
+        <a href="${pageContext.request.contextPath}/edit?id=
+	  <c:out value="${book.id}" />">EDIT
+	</a>
       </td>
     </tr>
   </c:forEach>
@@ -775,15 +807,16 @@ Here's the new-and-improved `Book` class. The new methods are at the bottom.
 ```java
 package library;
 
-public class Book {
-  
+public class Book
+{  
   private int id;
   private String title;
   private String author;
   private int copies;
   private int available;
     
-  public Book(int id, String title, String author, int copies, int available) {
+  public Book(int id, String title, String author, int copies, int available)
+  {
     super();
     
     this.id = id;
@@ -793,37 +826,45 @@ public class Book {
     this.available = available;
   }
   
-  public int getId() {
+  public int getId()
+  {
     return id;
   }
   
-  public String getTitle() {
+  public String getTitle()
+  {
     return title;
   }
   
-  public String getAuthor() {
+  public String getAuthor()
+  {
     return author;
   }
   
-  public int getCopies() {
+  public int getCopies()
+  {
     return copies;
   }
   
-  public void setCopies(int copies) {
+  public void setCopies(int copies)
+  {
     this.copies = copies;
   }
   
-  public int getAvailable() {
+  public int getAvailable()
+  {
     return available;
   }
   
-  public void rentMe() {
+  public void rentMe()
+  {
     if (available > 0) {
       available--;
     }
   }
   
-  public void returnMe() {
+  public void returnMe()
+  {
     if (available < copies) {
       available++;
     }
@@ -835,7 +876,9 @@ Now, on to our servlet. We'll update the `switch` statement in our `doGet` metho
 
 ```java
 @Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException
+{
   final String action = request.getServletPath();
   
   try {
@@ -856,7 +899,9 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 And, since we're calling a new method from within that `switch` statement, we'll write that method, too.
 
 ```java
-private void updateBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {	
+private void updateBook(HttpServletRequest request, HttpServletResponse response)
+    throws SQLException, ServletException, IOException
+{	
   final String action = request.getParameter("action");
   final int id = Integer.parseInt(request.getParameter("id"));
   
@@ -956,7 +1001,9 @@ In the `Controller` class, again we'll be updating our `switch` statement.
 
 ```java
 @Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException
+{
   final String action = request.getServletPath();
   
   try {
@@ -981,7 +1028,9 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 We're intentionally falling through in our `switch` statement here. We want the `showEditForm` method to run for both `/add` and `/edit` paths.
 
 ```java
-private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+    throws SQLException, ServletException, IOException
+{
   try {
     final int id = Integer.parseInt(request.getParameter("id"));
     
@@ -1007,15 +1056,18 @@ Let's get the editing form up and running. We've got two jobs: editing and delet
 Add setters for those two fields in the `Book` class.
 
 ```java
-public void setTitle(String title) {
+public void setTitle(String title)
+{
   this.title = title;
 }
 
-public void setAuthor(String author) {
+public void setAuthor(String author)
+{
   this.author = author;
 }
 
-public void setAvailable(int available) {
+public void setAvailable(int available)
+{
   this.available = available;
 }
 ```
