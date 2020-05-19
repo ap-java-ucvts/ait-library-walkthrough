@@ -1199,3 +1199,181 @@ private void insertBook(HttpServletRequest request, HttpServletResponse response
   response.sendRedirect(request.getContextPath() + "/");
 }
 ```
+## Styling the Application
+
+Now that everything is functional, let's take a look at the aesthetics. We'll start with our `invetory.jsp` page. We're going to tweak the JSP in preparation for adding styles.
+
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>AIT Library</title>
+    
+    <style type="text/css">
+      <%@ include file="css/styles.css" %>
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Inventory Management</h1>
+      
+      <div class="header">
+        <a href="${pageContext.request.contextPath}/" class="header-button">VIEW ALL</a>
+        <a href="${pageContext.request.contextPath}/add" class="header-button">ADD A BOOK</a> 
+      </div>
+    </div>
+    <div>
+      <table border="1">        
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Copies</th>
+          <th>Available</th>
+          <th>Actions</th>
+        </tr>
+        <c:forEach var="book" items="${books}">
+          <tr>
+            <td><c:out value="${book.title}" /></td>
+            <td><c:out value="${book.author}" /></td>
+            <td><c:out value="${book.copies}" /></td>
+            <td><c:out value="${book.available}" /></td>
+            <td>
+	      <div>
+	        <a href="${pageContext.request.contextPath}/update?action=rent&id=${book.id}"
+            	   class="button"
+                >
+              	  RENT
+              	</a>
+              	<a href="${pageContext.request.contextPath}/update?action=return&id=${book.id}"
+              	   class="button"
+              	>
+              	  RETURN
+              	</a>
+              	<a href="${pageContext.request.contextPath}/edit?id=${book.id}"
+              	   class="button"
+              	>
+              	  EDIT
+              	</a>
+              </div>
+            </td>
+          </tr>
+        </c:forEach>
+      </table>
+    </div>
+  </body>
+</html>
+```
+
+Now, we'll add some CSS. First, right-click the `WebContent` folder and click `New > Folder`. Call the folder `css`.
+
+![new-css-folder](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/create-css-folder.png)
+
+Then, right-click the newly created `css` folder and click `New > File`. Call the file `styles.css`.
+
+![new-css-file](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/create-styles-css.png)
+
+And, last but not least, add your styles.
+
+```css
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: ivory;
+  font-family: "Montserrat", sans-serif;
+  padding-top: 3%;
+ text-align: center;
+}
+
+h1 {
+  letter-spacing: 3px;
+  margin-bottom: 2%;
+  text-transform: uppercase;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: 80%;
+}
+
+table tr:first-child {
+  background-color: lightblue;
+}
+
+table th {
+  font-weight: bold;
+}
+
+table td {
+  text-align: left;
+}
+
+table td:nth-child(3),
+table td:nth-child(4) {
+  text-align: center;
+}
+
+table td:nth-child(5) div {
+  display: flex;
+  justify-content: space-around;
+}
+
+table th,
+table td {
+  padding: 7px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  margin-bottom: 2%;
+  width: 30%;
+}
+
+.header-button {
+  background-color: lightcoral;
+  border: 1px solid black;
+  border-radius: 7px;
+  color: black;
+  font-weight: bold;
+  padding: 12px;
+  text-align: center;
+  text-decoration: none;
+  width: 45%;
+}
+
+.header-button:active {
+  background-color: coral;
+  color: white;
+}
+
+.button {
+  background-color: lightgray;
+  border: 1px solid black;
+  border-radius: 3px;
+  color: black;
+  font-size: 14px;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  width: 25%;
+}
+
+.button:active {
+  background-color: darkgray;
+  color: white;
+}
+```
+
+So far, so good. Our `inventory.jsp` page is all styled.
+
+![inventory-page-final](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/inventory-styled.png)
