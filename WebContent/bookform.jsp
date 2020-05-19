@@ -32,10 +32,18 @@
 	        </label>
 	        <label>
 	          # of Copies
-	          <input type="text" name="copies" value="<c:out value="${book.copies}" />" />
+	          <select name="copies">
+	          	<c:forEach begin="1" end="10" varStatus="loop">
+	          		<option value="${loop.index}"
+	          			<c:if test="${book.copies == loop.index}">selected</c:if>
+	          		>
+	          			${loop.index}
+	          		</option>
+	          	</c:forEach>
+	          </select>
 	        </label>
-	        <input type="submit" value="Save" name="save" />
-	        <input type="submit" value="Delete" name="delete" />
+	        <input type="submit" value="Save" name="submit" />
+	        <input type="submit" value="Delete" name="submit" />
 	      </form>
       </c:if>
       <c:if test="${book == null}">
@@ -55,7 +63,7 @@
             # of Copies
             <input type="text" name="copies" />
           </label>
-          <input type="submit" value="Save" />
+          <input type="submit" value="Add" name="submit" />
         </form>
       </c:if>
     </div>

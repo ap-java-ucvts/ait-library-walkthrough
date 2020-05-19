@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import library.Book;
 import library.BookDAO;
 
-public class Controller extends HttpServlet {
-
+public class Controller extends HttpServlet
+{
     private static final long serialVersionUID = 1L;
     private BookDAO dao;
 
-    public void init() {
+    public void init()
+    {
 	final String url = this.getServletContext().getInitParameter("JDBC-URL");
 	final String username = this.getServletContext().getInitParameter("JDBC-USERNAME");
 	final String password = this.getServletContext().getInitParameter("JDBC-PASSWORD");
@@ -27,12 +28,16 @@ public class Controller extends HttpServlet {
     }
     
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	    throws ServletException, IOException
+    {
 	doGet(request, response);
     }
     
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	    throws ServletException, IOException
+    {
 	final String action = request.getServletPath();
 	
 	try {
@@ -53,7 +58,9 @@ public class Controller extends HttpServlet {
 	}
     }
     
-    private void viewBooks(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+    private void viewBooks(HttpServletRequest request, HttpServletResponse response)
+	    throws SQLException, ServletException, IOException
+    {
 	List<Book> books = dao.getBooks();
 	request.setAttribute("books", books);
 	
@@ -61,7 +68,9 @@ public class Controller extends HttpServlet {
 	dispatcher.forward(request, response);
     }
     
-    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+	    throws SQLException, ServletException, IOException
+    {
 	try {
 	    final int id = Integer.parseInt(request.getParameter("id"));
 	    
@@ -73,8 +82,12 @@ public class Controller extends HttpServlet {
 	}
     }
     
-    private void updateBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {	
-	final String action = request.getParameter("action");
+    private void updateBook(HttpServletRequest request, HttpServletResponse response)
+	    throws SQLException, ServletException, IOException
+    {
+	final String action = request.getParameter("action") != null
+		? request.getParameter("action")
+		: request.getParameter("submit").toLowerCase();
 	final int id = Integer.parseInt(request.getParameter("id"));
 	
 	Book book = dao.getBook(id);
@@ -85,9 +98,31 @@ public class Controller extends HttpServlet {
 	    case "return":
     	    	book.returnMe();
     	    	break;
+	    case "save":
+		String title = request.getParameter("title");
+		String author = request.getParameter("author");
+		int copies = Integer.parseInt(request.getParameter("copies"));
+		int available = Integer.parseInt(request.getParameter("available"));
+		
+		book.setTitle(title);
+		book.setAuthor(author);
+		book.setCopies(copies);
+		book.setAvailable(available);
+		
+		break;
+	    case "delete":
+		deleteBook(id, request, response);
+		return;
 	}
+	
 	dao.updateBook(book);
-
+	response.sendRedirect(request.getContextPath() + "/");
+    }
+    
+    private void deleteBook(final int id, HttpServletRequest request, HttpServletResponse response)
+	    throws SQLException, ServletException, IOException
+    {	
+	dao.deleteBook(dao.getBook(id));	
 	response.sendRedirect(request.getContextPath() + "/");
     }
 }
