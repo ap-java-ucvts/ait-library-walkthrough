@@ -34,14 +34,14 @@
             <td><c:out value="${book.copies}" /></td>
             <td><c:out value="${book.available}" /></td>
             <td>
-              <a href="${pageContext.request.contextPath}/update?action=rent&id=
-              	<c:out value="${book.id}" />">RENT
+              <a href="${pageContext.request.contextPath}/update?action=rent&id=${book.id}">
+              	RENT
               </a>
-              <a href="${pageContext.request.contextPath}/update?action=return&id=
-              	<c:out value="${book.id}" />">RETURN
+              <a href="${pageContext.request.contextPath}/update?action=return&id=${book.id}">
+              	RETURN
               </a>
-              <a href="${pageContext.request.contextPath}/edit?id=
-              	<c:out value="${book.id}" />">EDIT
+              <a href="${pageContext.request.contextPath}/edit?id=${book.id}">
+              	EDIT
               </a>
             </td>
           </tr>

@@ -46,6 +46,9 @@ public class Controller extends HttpServlet
 	    	case "/edit":
 	    	    showEditForm(request, response);
 	    	    break;
+	    	case "/insert":
+	    	    insertBook(request, response);
+	    	    break;
 	    	case "/update":
 	    	    updateBook(request, response);
 	    	    break;
@@ -72,14 +75,28 @@ public class Controller extends HttpServlet
 	    throws SQLException, ServletException, IOException
     {
 	try {
+	    System.out.println("is this a real book?");
 	    final int id = Integer.parseInt(request.getParameter("id"));
 	    
 	    Book book = dao.getBook(id);
 	    request.setAttribute("book", book);
+	    System.out.println("editing a real live book");
 	} finally {
+	    System.out.println("dispatch on yourself");
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("bookform.jsp");
 	    dispatcher.forward(request, response);
 	}
+    }
+    
+    private void insertBook(HttpServletRequest request, HttpServletResponse response)
+	    throws SQLException, ServletException, IOException
+    {
+	String title = request.getParameter("title");
+	String author = request.getParameter("author");
+	int copies = Integer.parseInt(request.getParameter("copies"));
+	
+	dao.insertBook(title, author, copies, copies);
+	response.sendRedirect(request.getContextPath() + "/");
     }
     
     private void updateBook(HttpServletRequest request, HttpServletResponse response)
@@ -102,7 +119,7 @@ public class Controller extends HttpServlet
 		String title = request.getParameter("title");
 		String author = request.getParameter("author");
 		int copies = Integer.parseInt(request.getParameter("copies"));
-		int available = Integer.parseInt(request.getParameter("available"));
+		int available = book.getAvailable() + (copies - book.getCopies());
 		
 		book.setTitle(title);
 		book.setAuthor(author);

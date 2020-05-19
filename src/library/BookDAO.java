@@ -77,7 +77,8 @@ public class BookDAO
 	return books;
     }
     
-    public boolean insertBook(Book book) throws SQLException
+    public boolean insertBook(String title, String author, int copies, int available)
+	    throws SQLException
     {
 	final String sql = "INSERT INTO books (title, author, copies, available) " +
 		"VALUES (?, ?, ?, ?)";
@@ -85,10 +86,10 @@ public class BookDAO
 	Connection conn = getConnection();
 	PreparedStatement pstmt = conn.prepareStatement(sql);
 	
-	pstmt.setString(1, book.getTitle());
-	pstmt.setString(2, book.getAuthor());
-	pstmt.setInt(3, book.getCopies());
-	pstmt.setInt(4, book.getAvailable());
+	pstmt.setString(1, title);
+	pstmt.setString(2, author);
+	pstmt.setInt(3, copies);
+	pstmt.setInt(4, available);
 	int affected = pstmt.executeUpdate();
 	
 	pstmt.close();
