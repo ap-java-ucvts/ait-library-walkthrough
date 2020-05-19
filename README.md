@@ -876,3 +876,128 @@ private void updateBook(HttpServletRequest request, HttpServletResponse response
 ```
 
 Perfect. Now, we can click those `RENT` and `RETURN` links and the number of available copies will change accordingly.
+
+## Adding, Editing, and Deleting Books
+
+Now that we can rent and return a book, we need a way to add, edit, and delete books. We're going to use a single JSP file to represent these actions. Right-click the `WebContent` folder and click `New > JSP File`.
+
+![add-edit-bookform](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/bookform-jsp.png)
+
+In our newly created JSP file, we're going to construct a dual purpose form: adding new books, and editing or deleting existing ones.
+
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>AIT Library</title>
+  </head>
+  <body>
+    <div>
+      <h1>Inventory Management</h1>
+      
+      <div>
+        <a href="${pageContext.request.contextPath}/">VIEW ALL</a>
+        <a href="${pageContext.request.contextPath}/add">ADD A BOOK</a> 
+      </div
+    </div>
+    <div>
+      <c:if test="${book != null}">
+        <h2>Edit Book</h2>
+        <form action="update" method="post">
+          <input type="hidden" name="id" value="<c:out value="${book.id}" />" />
+          
+          <label>
+            Title
+            <input type="text" name="title" value="<c:out value="${book.title}" />" />
+          </label>
+          <label>
+            Author
+            <input type="text" name="author" value="<c:out value="${book.author}" />" />
+          </label>
+          <label>
+            # of Copies
+            <input type="text" name="copies" value="<c:out value="${book.copies}" />" />
+          </label>
+          <input type="submit" value="Save" name="save" />
+          <input type="submit" value="Delete" name="delete" />
+        </form>
+      </c:if>
+      <c:if test="${book == null}">
+        <h2>Add Book</h2>
+        <form action="insert" method="post">
+          <input type="hidden" name="id" />
+          
+          <label>
+            Title
+            <input type="text" name="title" />
+          </label>
+          <label>
+            Author
+            <input type="text" name="author" />
+          </label>
+          <label>
+            # of Copies
+            <input type="text" name="copies" />
+          </label>
+          <input type="submit" value="Save" />
+        </form>
+      </c:if>
+    </div>
+  </body>
+</html>
+```
+We display one of two forms, depending on whether there is a valid instance of the `Book` class.
+
+In the `Controller` class, again we'll be updating our `switch` statement.
+
+```java
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  final String action = request.getServletPath();
+  
+  try {
+    switch (action) {
+	    case "/add":
+      case "/edit":
+	      showEditForm(request, response);
+	    	break;
+      case "/update":
+        updateBook(request, response);
+        break;
+      default:
+        viewBooks(request, response);
+        break;
+    }
+  } catch (SQLException e) {
+    throw new ServletException(e);
+	}
+}
+```
+
+We're intentionally falling through in our `switch` statement here. We want the `showEditForm` method to run for both `/add` and `/edit` paths.
+
+```java
+private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+  try {
+    final int id = Integer.parseInt(request.getParameter("id"));
+    
+    Book book = dao.getBook(id);
+    request.setAttribute("book", book);
+  } finally {
+    RequestDispatcher dispatcher = request.getRequestDispatcher("bookform.jsp");
+    dispatcher.forward(request, response);
+  }
+}
+```
+
+We still need to implement the form functionality, but we do have two successfully rendering forms. The form for adding new books to the library.
+
+![add-book-form](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/add-book-form.png)
+
+And another for editing existing books.
+
+![edit-book-form](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/edit-book-form.png)
