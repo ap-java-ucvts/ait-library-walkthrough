@@ -37,6 +37,9 @@ public class Controller extends HttpServlet {
 	
 	try {
 	    switch (action) {
+	    	case "/update":
+	    	    updateBook(request, response);
+	    	    break;
 	    	default:
 	    	    viewBooks(request, response);
 	    	    break;
@@ -52,5 +55,23 @@ public class Controller extends HttpServlet {
 	
 	RequestDispatcher dispatcher = request.getRequestDispatcher("inventory.jsp");
 	dispatcher.forward(request, response);
+    }
+    
+    private void updateBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {	
+	final String action = request.getParameter("action");
+	final int id = Integer.parseInt(request.getParameter("id"));
+	
+	Book book = dao.getBook(id);
+	switch (action) {
+	    case "rent":
+    	    	book.rentMe();
+    	    	break;
+	    case "return":
+    	    	book.returnMe();
+    	    	break;
+	}
+	dao.updateBook(book);
+
+	response.sendRedirect(request.getContextPath() + "/");
     }
 }
