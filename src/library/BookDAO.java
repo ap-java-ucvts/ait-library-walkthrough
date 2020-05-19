@@ -9,13 +9,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookDAO {
-
+public class BookDAO
+{
     private final String url;
     private final String username;
     private final String password;
     
-    public BookDAO(String url, String username, String password) {
+    public BookDAO(String url, String username, String password)
+    {
 	super();
 	
 	this.url = url;
@@ -23,7 +24,8 @@ public class BookDAO {
 	this.password = password;
     }
     
-    public Book getBook(int id) throws SQLException {
+    public Book getBook(int id) throws SQLException
+    {
 	final String sql = "SELECT * FROM books WHERE book_id = ?";
 	
 	Book book = null;
@@ -49,7 +51,8 @@ public class BookDAO {
 	return book;
     }
     
-    public List<Book> getBooks() throws SQLException {
+    public List<Book> getBooks() throws SQLException
+    {
 	final String sql = "SELECT * FROM books ORDER BY book_id ASC";
 	
 	List<Book> books = new ArrayList<>();
@@ -74,8 +77,10 @@ public class BookDAO {
 	return books;
     }
     
-    public boolean insertBook(Book book) throws SQLException {
-	final String sql = "INSERT INTO books (title, author, copies, available) VALUES (?, ?, ?, ?)";
+    public boolean insertBook(Book book) throws SQLException
+    {
+	final String sql = "INSERT INTO books (title, author, copies, available) " +
+		"VALUES (?, ?, ?, ?)";
 	
 	Connection conn = getConnection();
 	PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -92,8 +97,10 @@ public class BookDAO {
 	return affected == 1;
     }
     
-    public boolean updateBook(Book book) throws SQLException {
-	final String sql = "UPDATE books SET title = ?, author = ?, copies = ?, available = ? WHERE book_id = ?";
+    public boolean updateBook(Book book) throws SQLException
+    {
+	final String sql = "UPDATE books SET title = ?, author = ?, copies = ?, available = ? " +
+		"WHERE book_id = ?";
 	
 	Connection conn = getConnection();
 	PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -111,7 +118,8 @@ public class BookDAO {
 	return affected == 1;
     }
     
-    public boolean deleteBook(Book book) throws SQLException {
+    public boolean deleteBook(Book book) throws SQLException
+    {
 	final String sql = "DELETE FROM books WHERE book_id = ?";
 	
 	Connection conn = getConnection();
@@ -126,7 +134,8 @@ public class BookDAO {
 	return affected == 1;
     }
     
-    private Connection getConnection() throws SQLException {
+    private Connection getConnection() throws SQLException
+    {
 	final String driver = "com.mysql.cj.jdbc.Driver";
 	
 	try {

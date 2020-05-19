@@ -34,9 +34,15 @@
             <td><c:out value="${book.copies}" /></td>
             <td><c:out value="${book.available}" /></td>
             <td>
-              <a href="${pageContext.request.contextPath}/update?action=rent&id=<c:out value="${book.id}" />">RENT</a>
-              <a href="${pageContext.request.contextPath}/update?action=return&id=<c:out value="${book.id}" />">RETURN</a>
-              <a href="${pageContext.request.contextPath}/edit?id=<c:out value="${book.id}" />">EDIT</a>
+              <a href="${pageContext.request.contextPath}/update?action=rent&id=
+              	<c:out value="${book.id}" />">RENT
+              </a>
+              <a href="${pageContext.request.contextPath}/update?action=return&id=
+              	<c:out value="${book.id}" />">RETURN
+              </a>
+              <a href="${pageContext.request.contextPath}/edit?id=
+              	<c:out value="${book.id}" />">EDIT
+              </a>
             </td>
           </tr>
         </c:forEach>
