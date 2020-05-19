@@ -1107,7 +1107,7 @@ private void updateBook(HttpServletRequest request, HttpServletResponse response
       String title = request.getParameter("title");
       String author = request.getParameter("author");
       int copies = Integer.parseInt(request.getParameter("copies"));
-      int available = Integer.parseInt(request.getParameter("available"));
+      int available = book.getAvailable() + (copies - book.getCopies());
 		
       book.setTitle(title);
       book.setAuthor(author);
@@ -1132,3 +1132,70 @@ private void deleteBook(final int id, HttpServletRequest request, HttpServletRes
 ```
 
 Now we can rent, return, edit, and delete books! Let's get started on adding books.
+
+We need to make a quick change to our `BookDAO` class. We aren't going to have a `book` object when inserting, because we won't yet have an `id`. We need to modify our `insertBook` method to accept the individual values.
+
+```java
+public boolean insertBook(String title, String author, int copies, int available)
+    throws SQLException
+{
+  final String sql = "INSERT INTO books (title, author, copies, available) " +
+      "VALUES (?, ?, ?, ?)";
+	
+  Connection conn = getConnection();
+  PreparedStatement pstmt = conn.prepareStatement(sql);
+	
+  pstmt.setString(1, title);
+  pstmt.setString(2, author);
+  pstmt.setInt(3, copies);
+  pstmt.setInt(4, available);
+  int affected = pstmt.executeUpdate();
+	
+  pstmt.close();
+  conn.close();
+	
+  return affected == 1;
+}
+```
+
+Perfect. Now we can go ahead and update the `Controller`. This will involve changes to `doGet`, as well as the creation of an `insertBook` method.
+
+```java
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException
+{
+  final String action = request.getServletPath();
+	
+  try {
+    switch (action) {
+      case "/add":
+      case "/edit":
+        showEditForm(request, response);
+        break;
+      case "/insert":
+        insertBook(request, response);
+        break;
+      case "/update":
+        updateBook(request, response);
+        break;
+      default:
+        viewBooks(request, response);
+        break;
+    }   
+  } catch (SQLException e) {
+    throw new ServletException(e);
+  }
+}
+
+private void insertBook(HttpServletRequest request, HttpServletResponse response)
+    throws SQLException, ServletException, IOException
+{
+  String title = request.getParameter("title");
+  String author = request.getParameter("author");
+  int copies = Integer.parseInt(request.getParameter("copies"));
+	
+  dao.insertBook(title, author, copies, copies);
+  response.sendRedirect(request.getContextPath() + "/");
+}
+```
