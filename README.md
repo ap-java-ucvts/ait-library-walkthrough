@@ -922,8 +922,8 @@ In our newly created JSP file, we're going to construct a dual purpose form: add
             # of Copies
             <input type="text" name="copies" value="<c:out value="${book.copies}" />" />
           </label>
-          <input type="submit" value="Save" name="save" />
-          <input type="submit" value="Delete" name="delete" />
+          <input type="submit" value="Save" name="submit" />
+          <input type="submit" value="Delete" name="submit" />
         </form>
       </c:if>
       <c:if test="${book == null}">
@@ -943,7 +943,7 @@ In our newly created JSP file, we're going to construct a dual purpose form: add
             # of Copies
             <input type="text" name="copies" />
           </label>
-          <input type="submit" value="Save" />
+          <input type="submit" value="Add" name="submit" />
         </form>
       </c:if>
     </div>
@@ -1001,3 +1001,82 @@ We still need to implement the form functionality, but we do have two successful
 And another for editing (or deleting) existing books.
 
 ![edit-book-form](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/edit-book-form.png)
+
+Let's get the editing form up and running. We've got two jobs: editing and deleting. And even though we intially left out setters for `title`, `author`, and `available`, we're going to let users edit those values. Maybe someone typed them in wrong when adding a book. It happens. And if we change total copies, we'll need to change the number of copies available, too.
+
+Add setters for those two fields in the `Book` class.
+
+```java
+public void setTitle(String title) {
+  this.title = title;
+}
+
+public void setAuthor(String author) {
+  this.author = author;
+}
+
+public void setAvailable(int available) {
+  this.available = available;
+}
+```
+
+Let's make our error-handling a little easier, too. We don't want to check every time if the user entered a number. We're going to force their hand with a dropdown menu. Replace the `input` tag in `bookform.jsp` for `# of Copies` with this `select` tag.
+
+```jsp
+<select name="copies">
+  <c:forEach begin="1" end="10" varStatus="loop">
+    <option value="${loop.index}" <c:if test="${book.copies == loop.index}">selected</c:if>>
+      ${loop.index}
+    </option>
+  </c:forEach>
+</select>
+```
+
+And last, but not least, we'll modify our `Controller`. Let's revise the `updateBook` method, and add a `deleteBook` method.
+
+```java
+private void updateBook(HttpServletRequest request, HttpServletResponse response)
+    throws SQLException, ServletException, IOException
+{
+  final String action = request.getParameter("action") != null
+    ? request.getParameter("action")
+    : request.getParameter("submit").toLowerCase();
+  final int id = Integer.parseInt(request.getParameter("id"));
+	
+  Book book = dao.getBook(id);
+  switch (action) {
+    case "rent":
+      book.rentMe();
+      break;
+    case "return":
+      book.returnMe();
+      break;
+    case "save":
+      String title = request.getParameter("title");
+      String author = request.getParameter("author");
+      int copies = Integer.parseInt(request.getParameter("copies"));
+      int available = Integer.parseInt(request.getParameter("available"));
+		
+      book.setTitle(title);
+      book.setAuthor(author);
+      book.setCopies(copies);
+      book.setAvailable(available);
+      break;
+    case "delete":
+      deleteBook(id, request, response);
+      return;
+    }
+
+    dao.updateBook(book);
+    response.sendRedirect(request.getContextPath() + "/");
+  }
+    
+private void deleteBook(final int id, HttpServletRequest request, HttpServletResponse response)
+    throws SQLException, ServletException, IOException
+{	
+  dao.deleteBook(dao.getBook(id));	
+  response.sendRedirect(request.getContextPath() + "/");
+}
+```
+
+Now we can rent, return, edit, and delete books! Let's get started on adding books.
