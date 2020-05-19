@@ -998,6 +998,6 @@ We still need to implement the form functionality, but we do have two successful
 
 ![add-book-form](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/add-book-form.png)
 
-And another for editing existing books.
+And another for editing (or deleting) existing books.
 
 ![edit-book-form](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/edit-book-form.png)
