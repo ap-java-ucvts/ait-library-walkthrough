@@ -974,7 +974,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
     }
   } catch (SQLException e) {
     throw new ServletException(e);
-	}
+  }
 }
 ```
 
