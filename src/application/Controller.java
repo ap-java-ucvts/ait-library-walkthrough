@@ -20,11 +20,11 @@ public class Controller extends HttpServlet
 
     public void init()
     {
-	final String url = this.getServletContext().getInitParameter("JDBC-URL");
-	final String username = this.getServletContext().getInitParameter("JDBC-USERNAME");
-	final String password = this.getServletContext().getInitParameter("JDBC-PASSWORD");
+	final String url = getServletContext().getInitParameter("JDBC-URL");
+	final String username = getServletContext().getInitParameter("JDBC-USERNAME");
+	final String password = getServletContext().getInitParameter("JDBC-PASSWORD");
 	
-	this.dao = new BookDAO(url, username, password);
+	dao = new BookDAO(url, username, password);
     }
     
     @Override
@@ -75,14 +75,11 @@ public class Controller extends HttpServlet
 	    throws SQLException, ServletException, IOException
     {
 	try {
-	    System.out.println("is this a real book?");
 	    final int id = Integer.parseInt(request.getParameter("id"));
 	    
 	    Book book = dao.getBook(id);
 	    request.setAttribute("book", book);
-	    System.out.println("editing a real live book");
 	} finally {
-	    System.out.println("dispatch on yourself");
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("bookform.jsp");
 	    dispatcher.forward(request, response);
 	}
