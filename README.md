@@ -598,7 +598,7 @@ public class Controller extends HttpServlet
     final String username = "root";
     final String password = "rootpwd";
     
-    this.dao = new BookDAO(url, username, password);
+    dao = new BookDAO(url, username, password);
   }
   
   @Override
@@ -718,7 +718,7 @@ public void init()
   final String username = this.getServletContext().getInitParameter("JDBC-USERNAME");
   final String password = this.getServletContext().getInitParameter("JDBC-PASSWORD");
 
-  this.dao = new BookDAO(url, username, password);
+  dao = new BookDAO(url, username, password);
 }
 ```
 
