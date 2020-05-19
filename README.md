@@ -725,3 +725,154 @@ In your browser, navigate to `http://localhost:8080/ait-library/`. If you did ev
 ![in-progress-test](https://github.com/ap-java-ucvts/ait-library-walkthrough/blob/master/images/in-progress-test-app.png)
 
 Things are finally starting to come together! Next, we'll start adding feature to allow users to add, modify, and delete books from the library's collection. Stay tuned...
+
+## Renting and Returning Books
+
+Now that our application renders some basic information, let's start working on adding the desired functionality. First, let's add a few things to `inventory.jsp`.
+
+In first `div` underneath `Inventory Management`, replace the existing `h2` and `a` tag with:
+
+```jsp
+<a href="${pageContext.request.contextPath}/">VIEW ALL</a>
+<a href="${pageContext.request.contextPath}/add">ADD A BOOK</a> 
+```
+
+Next, add one more column (and the associated data) to our `table`. This is where a user of our application, such as a librarian, would rent, return, or edit books.
+
+```jsp
+<table border="1">
+  <caption>All Books in Collection</caption>
+  
+  <tr>
+    <td>Title</td>
+    <td>Author</td>
+    <td>Copies</td>
+    <td>Available</td>
+    <td>Actions</td>
+  </tr>
+  <c:forEach var="book" items="${books}">
+    <tr>
+      <td><c:out value="${book.title}" /></td>
+      <td><c:out value="${book.author}" /></td>
+      <td><c:out value="${book.copies}" /></td>
+      <td><c:out value="${book.available}" /></td>
+      <td>
+        <a href="${pageContext.request.contextPath}/update?action=rent&id=<c:out value="${book.id}" />">RENT</a>
+        <a href="${pageContext.request.contextPath}/update?action=return&id=<c:out value="${book.id}" />">RETURN</a>
+        <a href="${pageContext.request.contextPath}/edit?id=<c:out value="${book.id}" />">EDIT</a>
+      </td>
+    </tr>
+  </c:forEach>
+</table>
+```
+
+Let's start with the `RENT` and `RETURN` features. When a user clicks one of these, the number of available books should either decrease or increase. We'll begin by modifying the `Book` class.
+
+First, remove the `setAvailable` method. Since users are going to be renting and returning books, it makes sense to have `rentMe` and `returnMe` methods. These will be in charge of updating the number of available copies, as well as verifying that this is even possible. We can't rent a book if all of our copies are already check out!
+
+Here's the new-and-improved `Book` class. The new methods are at the bottom.
+
+```java
+package library;
+
+public class Book {
+  
+  private int id;
+  private String title;
+  private String author;
+  private int copies;
+  private int available;
+    
+  public Book(int id, String title, String author, int copies, int available) {
+    super();
+    
+    this.id = id;
+    this.title = title;
+    this.author = author;
+    this.copies = copies;
+    this.available = available;
+  }
+  
+  public int getId() {
+    return id;
+  }
+  
+  public String getTitle() {
+    return title;
+  }
+  
+  public String getAuthor() {
+    return author;
+  }
+  
+  public int getCopies() {
+    return copies;
+  }
+  
+  public void setCopies(int copies) {
+    this.copies = copies;
+  }
+  
+  public int getAvailable() {
+    return available;
+  }
+  
+  public void rentMe() {
+    if (available > 0) {
+      available--;
+    }
+  }
+  
+  public void returnMe() {
+    if (available < copies) {
+      available++;
+    }
+  }
+}
+```
+
+Now, on to our servlet. We'll update the `switch` statement in our `doGet` method.
+
+```java
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  final String action = request.getServletPath();
+  
+  try {
+    switch (action) {
+      case "/update":
+        updateBook(request, response);
+        break;
+      default:
+        viewBooks(request, response);
+        break;
+    }
+  } catch (SQLException e) {
+    throw new ServletException(e);
+  }
+}
+```
+
+And, since we're calling a new method from within that `switch` statement, we'll write that method, too.
+
+```java
+private void updateBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {	
+  final String action = request.getParameter("action");
+  final int id = Integer.parseInt(request.getParameter("id"));
+  
+  Book book = dao.getBook(id);
+  switch (action) {
+    case "rent":
+      book.rentMe();
+      break;
+    case "return":
+      book.returnMe();
+      break;
+  }
+  dao.updateBook(book);
+  
+  response.sendRedirect(request.getContextPath() + "/");
+}
+```
+
+Perfect. Now, we can click those `RENT` and `RETURN` links and the number of available copies will change accordingly.
