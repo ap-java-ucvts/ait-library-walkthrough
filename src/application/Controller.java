@@ -37,6 +37,10 @@ public class Controller extends HttpServlet {
 	
 	try {
 	    switch (action) {
+	    	case "/add":
+	    	case "/edit":
+	    	    showEditForm(request, response);
+	    	    break;
 	    	case "/update":
 	    	    updateBook(request, response);
 	    	    break;
@@ -55,6 +59,18 @@ public class Controller extends HttpServlet {
 	
 	RequestDispatcher dispatcher = request.getRequestDispatcher("inventory.jsp");
 	dispatcher.forward(request, response);
+    }
+    
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+	try {
+	    final int id = Integer.parseInt(request.getParameter("id"));
+	    
+	    Book book = dao.getBook(id);
+	    request.setAttribute("book", book);
+	} finally {
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("bookform.jsp");
+	    dispatcher.forward(request, response);
+	}
     }
     
     private void updateBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {	
