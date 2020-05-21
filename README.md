@@ -249,6 +249,7 @@ public class Main
     
     rs.close();
     stmt.close();
+    conn.close();
   }
 }
 ```
