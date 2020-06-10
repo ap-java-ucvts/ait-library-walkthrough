@@ -222,16 +222,9 @@ public class Main
 {
   public static void main(String[] args) throws SQLException
   {
-    final String driver = "com.mysql.cj.jdbc.Driver";
     final String url = "jdbc:mysql://localhost:3306/library?serverTimezone=EST";
     final String username = "root";
     final String password = "rootpwd";
-
-    try {
-      Class.forName(driver);
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    }
 
     Connection conn = DriverManager.getConnection(url, username, password);
     Statement stmt = conn.createStatement();
