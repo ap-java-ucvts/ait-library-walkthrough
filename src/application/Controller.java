@@ -79,6 +79,8 @@ public class Controller extends HttpServlet
 	    
 	    Book book = dao.getBook(id);
 	    request.setAttribute("book", book);
+	} catch (NumberFormatException e) {
+	   // this is expected for empty forms (i.e., without a valid id)
 	} finally {
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("bookform.jsp");
 	    dispatcher.forward(request, response);
